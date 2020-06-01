@@ -19,5 +19,7 @@ public interface RoomProcessorInterface {
 
     void toBook(int id);
 
+    void toFree(int id);
+
     HashMap<String, ArrayList<Room>> roomsMap(ArrayList<Room> rooms);
 }

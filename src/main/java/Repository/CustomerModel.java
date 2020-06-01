@@ -11,7 +11,7 @@ public class CustomerModel implements ModelLayerCustomer {
 
     private  String url = "jdbc:mysql://localhost/hoteldb?serverTimezone=Europe/Moscow&useSSL=false";
     private  String username = "root";
-    private String password = "admin";
+    private String password = "root";
 
     @Override
     public Table<Integer, Customer> selectAll() {
@@ -30,7 +30,7 @@ public class CustomerModel implements ModelLayerCustomer {
                     Date customerArrDate = resultSet.getDate(4);
                     Date customerDepDate = resultSet.getDate(5);
                     Customer customer = new Customer(customerId, customerName, customerRoom, customerArrDate, customerDepDate);
-                    customers.add(customerId, customer);
+                    customers.add(customerRoom, customer);
                 }
             }
         }

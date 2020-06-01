@@ -15,6 +15,8 @@ public interface ModelLayerRoom {
 
     void toBook(int id);
 
+    void toFree(int id);
+
     int insert(Room room);
 
     int update(Room room);

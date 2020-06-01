@@ -18,7 +18,7 @@ public class BPlusTree <T, V extends Comparable<V>>{
         this.bTreeOrder = bTreeOrder;
 
         this.maxNumber = bTreeOrder + 1;
-        this.root = new LeafNode<T, V>();
+        this.root = new LeafNode<>();
         this.left = null;
     }
 
@@ -30,22 +30,14 @@ public class BPlusTree <T, V extends Comparable<V>>{
         return t;
     }
 
-    //insert
     public void insert(T value, V key){
         if(key == null)
             return;
         Node<T, V> t = this.root.insert(value, key);
         if(t != null)
             this.root = t;
-        this.left = (LeafNode<T, V>)this.root.refreshLeft();
-
-// System.out.println("Insert completed, the current root node is:");
-//        for(int j = 0; j < this.root.number; j++) {
-//            System.out.print((V) this.root.keys[j] + " ");
-//        }
-//        System.out.println();
+        this.left = this.root.refreshLeft();
     }
-
 
     abstract class Node<T, V extends Comparable<V>>{
 
@@ -55,7 +47,7 @@ public class BPlusTree <T, V extends Comparable<V>>{
 
         protected Integer number;
 
-        protected Object keys[];
+        protected Object[] keys;
 
         public Node(){
             this.keys = new Object[maxNumber];
@@ -100,13 +92,7 @@ public class BPlusTree <T, V extends Comparable<V>>{
             }
             if(key.compareTo((V) this.keys[this.number - 1]) >= 0) {
                 i--;
-//                if(this.childs[i].number + 1 <= bTreeOrder) {
-//                    this.keys[this.number - 1] = key;
-//                }
             }
-
-// System.out.println("non-leaf node lookup key: " + this.keys[i]);
-
             return this.childs[i].insert(value, key);
         }
 
@@ -139,8 +125,8 @@ public class BPlusTree <T, V extends Comparable<V>>{
             this.keys[i] = node1.keys[node1.number - 1];
             this.childs[i] = node1;
 
-            Object tempKeys[] = new Object[maxNumber];
-            Object tempChilds[] = new Node[maxNumber];
+            Object[] tempKeys = new Object[maxNumber];
+            Object[] tempChilds = new Node[maxNumber];
 
             System.arraycopy(this.keys, 0, tempKeys, 0, i + 1);
             System.arraycopy(this.childs, 0, tempChilds, 0, i + 1);
@@ -163,7 +149,7 @@ public class BPlusTree <T, V extends Comparable<V>>{
             Integer middle = this.number / 2;
 
             // Create a new non-leaf node, as the right half of the split
-            BPlusNode<T, V> tempNode = new BPlusNode<T, V>();
+            BPlusNode<T, V> tempNode = new BPlusNode<>();
             // After the non-leaf node split, the parent node pointer of its child node should be updated to the correct pointer
             tempNode.number = this.number - middle;
             tempNode.parent = this.parent;
@@ -196,7 +182,7 @@ public class BPlusTree <T, V extends Comparable<V>>{
 
     class LeafNode <T, V extends Comparable<V>> extends Node<T, V> {
 
-        protected Object values[];
+        protected Object[] values;
         protected LeafNode left;
         protected LeafNode right;
 
@@ -246,8 +232,8 @@ public class BPlusTree <T, V extends Comparable<V>>{
             }
 
             // Copy the array, complete the addition
-            Object tempKeys[] = new Object[maxNumber];
-            Object tempValues[] = new Object[maxNumber];
+            Object[] tempKeys = new Object[maxNumber];
+            Object[] tempValues = new Object[maxNumber];
             System.arraycopy(this.keys, 0, tempKeys, 0, i);
             System.arraycopy(this.values, 0, tempValues, 0, i);
             System.arraycopy(this.keys, i, tempKeys, i + 1, this.number - i);
@@ -284,7 +270,7 @@ public class BPlusTree <T, V extends Comparable<V>>{
             Integer middle = this.number / 2;
 
             // New leaf node, as the right half of the split
-            LeafNode<T, V> tempNode = new LeafNode<T, V>();
+            LeafNode<T, V> tempNode = new LeafNode<>();
             tempNode.number = this.number - middle;
             tempNode.parent = this.parent;
             //If the parent node is empty, create a new non-leaf node as the parent node, and let the pointers of the two leaf nodes that are successfully split point to the parent node.

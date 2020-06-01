@@ -26,6 +26,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
+	height: auto;
 	background-color: #B0E0E6;
 	border-spacing: 5px;
 	box-shadow: 0 20px 30px black;
@@ -42,6 +43,7 @@
 	background-color: black;
 	color: white;
 	padding: 5px;
+	text-align: center;
 }
 a{
 	text-decoration: none;

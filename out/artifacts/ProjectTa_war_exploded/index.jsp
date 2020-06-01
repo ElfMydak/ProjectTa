@@ -17,13 +17,14 @@
 				<th>ROOM</th>
 				<th>NAME</th>
 				<th>DATE</th>
+				<th></th>
 			</tr>
 			<c:forEach var="customer" items="${customers}">
 				<tr class="tr">
 					<td>${customer.getCustomerRoom()}</td>
 					<td>${customer.getCustomerName()}</td>
 					<td>${customer.getCustomerDepDate()}</td>
-					<th><button class="button"><a href='<c:url value="/deleteCustomer?id=${customer.getCustomerId()}" />'><h3>Delete</h3></a></button></th>
+					<td><button class="button"><a href='<c:url value="/deleteCustomer?room=${customer.getCustomerRoom()}" />'><h3>Delete</h3></a></button></td>
 				</tr>
 			</c:forEach>
 		</table>

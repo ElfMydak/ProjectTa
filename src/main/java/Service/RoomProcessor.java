@@ -46,6 +46,11 @@ public class RoomProcessor implements RoomProcessorInterface {
     }
 
     @Override
+    public void toFree(int id){
+        modelRoom.toFree(id);
+    }
+
+    @Override
     public HashMap<String, ArrayList<Room>> roomsMap(ArrayList<Room> rooms){
         HashMap<String, ArrayList<Room>> roomMap = new HashMap<>();
         for(Room room : rooms){

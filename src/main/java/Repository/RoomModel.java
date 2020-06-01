@@ -11,7 +11,7 @@ public class RoomModel implements ModelLayerRoom {
 
     private  String url = "jdbc:mysql://localhost/hoteldb?serverTimezone=Europe/Moscow&useSSL=false";
     private  String username = "root";
-    private String password = "admin";
+    private String password = "root";
 
     @Override
     public BPlusTree<Room, Integer> selectAllNumbers() {
@@ -66,6 +66,25 @@ public class RoomModel implements ModelLayerRoom {
                 String sql = "UPDATE room SET room_status = ? WHERE room_id = ?";
                 try(PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
                     preparedStatement.setBoolean(1, true);
+                    preparedStatement.setInt(2, id);
+                    preparedStatement.executeUpdate();
+                }
+            }
+        }
+        catch(Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    @Override
+    public void toFree(int id){
+        try{
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+            try (Connection conn = DriverManager.getConnection(url, username, password)){
+
+                String sql = "UPDATE room SET room_status = ? WHERE room_id = ?";
+                try(PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
+                    preparedStatement.setBoolean(1, false);
                     preparedStatement.setInt(2, id);
                     preparedStatement.executeUpdate();
                 }

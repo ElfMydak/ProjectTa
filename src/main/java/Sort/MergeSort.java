@@ -1,54 +1,72 @@
 package Sort;
 
+import Model.Customer;
+
+import java.util.ArrayList;
+
 public class MergeSort {
 
-    void merge(int[] arr, int l, int m, int r) {
+    private ArrayList<Customer> inputArray;
 
-        int n1 = m - l + 1;
-        int n2 = r - m;
+    public ArrayList<Customer> getSortedArray() {
+        return inputArray;
+    }
 
-        int[] L = new int[n1];
-        int[] R = new int[n2];
+    public MergeSort(ArrayList<Customer> inputArray){
+        this.inputArray = inputArray;
+    }
 
-        System.arraycopy(arr, l, L, 0, n1);
-        for (int j = 0; j < n2; ++j)
-            R[j] = arr[m + 1 + j];
+    public void sortGivenArray(){
+        divide(0, this.inputArray.size()-1);
+    }
 
-        int i = 0, j = 0;
+    public void divide(int startIndex,int endIndex){
 
-        int k = l;
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                arr[k] = L[i];
-                i++;
-            } else {
-                arr[k] = R[j];
-                j++;
-            }
-            k++;
-        }
-
-        while (i < n1) {
-            arr[k] = L[i];
-            i++;
-            k++;
-        }
-
-        while (j < n2) {
-            arr[k] = R[j];
-            j++;
-            k++;
+        //Divide till you breakdown your list to single element
+        if(startIndex < endIndex && (endIndex - startIndex) >= 1){
+            int mid = (endIndex + startIndex)/2;
+            divide(startIndex, mid);
+            divide(mid+1, endIndex);
+            //merging Sorted array produce above into one sorted array
+            merger(startIndex,mid,endIndex);
         }
     }
 
-    void sort(int[] arr, int l, int r) {
-        if (l < r) {
-            int m = (l + r) / 2;
+    public void merger(int startIndex,int midIndex,int endIndex){
 
-            sort(arr, l, m);
-            sort(arr, m + 1, r);
+        //Below is the mergedarray that will be sorted array Array[i-midIndex] , Array[(midIndex+1)-endIndex]
+        ArrayList<Customer> mergedSortedArray = new ArrayList<>();
 
-            merge(arr, l, m, r);
+        int leftIndex = startIndex;
+        int rightIndex = midIndex+1;
+
+        while(leftIndex <= midIndex && rightIndex <= endIndex){
+            if(inputArray.get(leftIndex).getCustomerDepDate().getTime() <= inputArray.get(rightIndex).getCustomerDepDate().getTime()){
+                mergedSortedArray.add(inputArray.get(leftIndex));
+                leftIndex++;
+            } else {
+                mergedSortedArray.add(inputArray.get(rightIndex));
+                rightIndex++;
+            }
+        }
+
+        //Either of below while loop will execute
+        while(leftIndex <= midIndex){
+            mergedSortedArray.add(inputArray.get(leftIndex));
+            leftIndex++;
+        }
+
+        while(rightIndex <= endIndex){
+            mergedSortedArray.add(inputArray.get(rightIndex));
+            rightIndex++;
+        }
+
+        int i = 0;
+        int j = startIndex;
+        //Setting sorted array to original one
+        while(i < mergedSortedArray.size()){
+            inputArray.set(j, mergedSortedArray.get(i++));
+            j++;
         }
     }
 }

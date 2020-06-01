@@ -40,7 +40,7 @@ public class Book extends HttpServlet {
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(longDate);
             customer.addCustomer(name + " " + surname, number, date);
             room.toBook(id);
-            resp.sendRedirect(req.getContextPath() + "/");
+            resp.sendRedirect(req.getContextPath() + "/mainPage");
         } catch (ParseException e) {
             e.printStackTrace();
         }

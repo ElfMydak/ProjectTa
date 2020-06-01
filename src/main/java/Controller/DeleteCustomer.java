@@ -1,7 +1,9 @@
 package Controller;
 
-import Interfaces.ModelLayerCustomer;
-import Repository.CustomerModel;
+import Interfaces.CustomerProcessorInterface;
+import Interfaces.RoomProcessorInterface;
+import Service.CustomerProcessor;
+import Service.RoomProcessor;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,12 +15,14 @@ import java.io.IOException;
 @WebServlet(urlPatterns = {"/deleteCustomer"})
 public class DeleteCustomer extends HttpServlet {
 
-    ModelLayerCustomer customers = new CustomerModel();
+    CustomerProcessorInterface customer = new CustomerProcessor();
+    RoomProcessorInterface room = new RoomProcessor();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-        customers.delete(id);
+        int number = Integer.parseInt(req.getParameter("room"));
+        customer.deleteCustomer(number);
+        room.toFree(room.findId(number));
         resp.sendRedirect(req.getContextPath() + "/mainPage");
     }
 }
